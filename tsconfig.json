@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".", 
     "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -29,6 +30,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-  ],
+, "app/components/LoginForm.jsx", "app/dashboard/layout.jsx"  ],
   "exclude": ["node_modules"]
 }
