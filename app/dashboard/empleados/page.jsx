@@ -1,5 +1,6 @@
 import EmpleadosTabla from "../../components/EmpleadosTabla"
 import { supabase } from '@/lib/supabase/client.js'
+export const dynamic = 'force-dynamic'
 
 export default async function EmpleadosPage() {
     const { data: empleados, error } = await supabase
