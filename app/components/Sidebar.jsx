@@ -1,5 +1,5 @@
 'use client'
-import { FiHome, FiUsers, FiCalendar, FiLogOut } from 'react-icons/fi'
+import { FiHome, FiUsers, FiCalendar, FiLogOut, FiClock } from 'react-icons/fi'
 import Link from "next/link"
 
 export default function Sidebar() {
@@ -19,6 +19,11 @@ export default function Sidebar() {
       href: '/dashboard/eventos',
       label: 'Eventos',
       icon: FiCalendar
+    },
+    {
+      href: '#',
+      label: 'Tracker',
+      icon: FiClock
     }
   ]
   
