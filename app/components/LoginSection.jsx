@@ -1,8 +1,19 @@
 'use client'
 
 import Image from "next/image"
+import { signInWithGoogle } from "../../lib/auth/oauth";
 
 export default function LoginSection() {
+
+  const handleLogin = async () => {
+    try {
+      const data = await signInWithGoogle();
+      console.log("Redirecting to Oauth:", data)
+    } catch (error) {
+      console.error("Login error:", data)
+    }
+  }
+
   return (
     <div className="w-full md:w-1/2 p-6 sm:p-8 md:p-10 lg:p-12 flex flex-col justify-center font-sans">
 
@@ -33,6 +44,7 @@ export default function LoginSection() {
         <button
           type="button"
           className="w-full flex items-center justify-center gap-3 py-2 rounded-md border border-gray-300 bg-white hover:bg-gray-50 transition-all shadow-sm hover:shadow-md font-medium text-gray-700"
+          onClick={handleLogin}
         >
           <svg width="20" height="20" viewBox="0 0 48 48">
             <path fill="#EA4335" d="M24 9.5c3.54 0 6.54 1.23 8.97 3.27l6.67-6.67C35.44 2.24 30.1 0 24 0 14.64 0 6.73 5.38 2.74 13.22l7.77 6.03C12.43 13.13 17.74 9.5 24 9.5z"/>

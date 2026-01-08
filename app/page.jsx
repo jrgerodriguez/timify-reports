@@ -10,12 +10,18 @@ const [ info, setInfo ]=useState([])
 
 useEffect(()=>{
     const fetchData = async ()=>{
-    const { data } = await supabase
+    const { data, error } = await supabase
     .from("test_table") //Se selecciona la tabla de la cual se extraerán los datos.
     .select("*") //Llama a todos los elementos de la tabla.
 
-    setInfo(data) //Guarda el resultado en la constante Info
+    if (error) {
+      console.error("Error fetching data:", error)
+      setInfo([]) // Opcional: puedes dejar info vacío si hay error
+    } else {
+      setInfo(data)
     }
+  }
+  
     fetchData()
   }, []
 )

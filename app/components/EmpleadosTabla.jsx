@@ -6,24 +6,26 @@ import { useState, useEffect } from "react"
 
 export default function EmpleadosTabla({empleados}) {
 
+    const safeEmpleados = Array.isArray(empleados) ? empleados : [];
+
     const [search, setSearch] = useState("");
-    const [filtered, setFiltered] = useState(empleados);
+    const [filtered, setFiltered] = useState(safeEmpleados);
 
     useEffect(() => {
     const term = search.toLowerCase().trim()
     
     if (!term) {
-        setFiltered(empleados)
+        setFiltered(safeEmpleados)
         return
     }
 
-    const data = empleados.filter(e => {
+    const data = safeEmpleados.filter(e => {
         const fullName = `${e.nombre ?? ""} ${e.apellido ?? ""}`.toLowerCase()
         return fullName.includes(term)
     })
 
     setFiltered(data)
-    }, [search, empleados])
+    }, [search, safeEmpleados])
 
      return (
         <>
@@ -39,13 +41,11 @@ export default function EmpleadosTabla({empleados}) {
         <div className="bg-white rounded-md border border-gray-300">
             <div className="max-h-150 overflow-y-auto">
                 <ul className="divide-y divide-gray-100">
-
                 {filtered.length === 0 ? (
                     <li className="px-6 py-6 text-center text-gray-500">
                     No se encontró ningún empleado.
                     </li>
                 ) : (
-                    
                     [...filtered]
                     .sort((a, b) =>
                         a.nombre.toLowerCase().localeCompare(b.nombre.toLowerCase())
