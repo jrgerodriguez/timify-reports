@@ -30,6 +30,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "app/components/LoginForm.jsx", "app/dashboard/layout.jsx"  ],
+, "app/components/LoginSection.jsx", "app/dashboard/layout.jsx"  ],
   "exclude": ["node_modules"]
 }
