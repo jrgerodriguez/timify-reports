@@ -107,7 +107,7 @@ export default function ResumenActividades() {
     setLoading(true);
 
     let query = supabase
-      .from("attendance_events")
+      .from("eventos")
       .select(`*,
         users(*)`
       )

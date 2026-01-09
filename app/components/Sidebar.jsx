@@ -11,6 +11,11 @@ export default function Sidebar() {
       icon: FiHome
     },
     {
+      href: '/dashboard/tracker',
+      label: 'Tracker',
+      icon: FiClock
+    },
+    {
       href: '/dashboard/empleados',
       label: 'Empleados',
       icon: FiUsers
@@ -20,11 +25,6 @@ export default function Sidebar() {
       label: 'Eventos',
       icon: FiCalendar
     },
-    {
-      href: '#',
-      label: 'Tracker',
-      icon: FiClock
-    }
   ]
   
     return (

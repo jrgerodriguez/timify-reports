@@ -111,7 +111,7 @@ export default function ResumenActividades({ userId }) {
     setLoading(true);
 
     let query = supabase
-      .from("attendance_events")
+      .from("eventos")
       .select("*")
       .eq("user_id", userId)
       .order("event_time", { ascending: true });

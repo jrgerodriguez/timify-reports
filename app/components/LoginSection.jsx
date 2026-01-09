@@ -2,20 +2,29 @@
 
 import Image from "next/image"
 import { signInWithGoogle } from "../../lib/auth/oauth";
+import { useState } from "react";
 
 export default function LoginSection() {
 
+  const [errorMessage, setErrorMessage] = useState(null)
+
   const handleLogin = async () => {
     try {
-      const data = await signInWithGoogle();
-      console.log("Redirecting to Oauth:", data)
+      setErrorMessage(null)
+      await signInWithGoogle();
     } catch (error) {
-      console.error("Login error:", data)
+      setErrorMessage("Error al iniciar sesión. Por favor inténtalo de nuevo.")
     }
   }
 
   return (
     <div className="w-full md:w-1/2 p-6 sm:p-8 md:p-10 lg:p-12 flex flex-col justify-center font-sans">
+
+    {errorMessage &&
+      <p className="text-red-700 bg-red-50 border border-red-200 rounded-md px-4 py-2 text-sm text-center mb-6">
+        {errorMessage}
+      </p>
+    }
 
     {/* Top Image / Logo */}
         <div className="flex justify-center mb-5">
@@ -43,7 +52,7 @@ export default function LoginSection() {
       <div className="w-full max-w-md mx-auto px-4 sm:px-0">
         <button
           type="button"
-          className="w-full flex items-center justify-center gap-3 py-2 rounded-md border border-gray-300 bg-white hover:bg-gray-50 transition-all shadow-sm hover:shadow-md font-medium text-gray-700"
+          className="w-full flex items-center justify-center gap-3 py-2 rounded-md border border-gray-300 bg-white hover:bg-gray-50 transition-all shadow-sm hover:shadow-md font-medium text-gray-700 cursor-pointer"
           onClick={handleLogin}
         >
           <svg width="20" height="20" viewBox="0 0 48 48">
