@@ -2,7 +2,7 @@
 
 import { supabase } from '@/lib/supabase/client'
 import { useEffect, useState } from 'react'
-import { crearUsuario } from "@/lib/supabase/empleados"
+import { crearEmpleado } from "@/lib/supabase/empleados"
 import Image from 'next/image'
 
 export default function Dashboard() {
@@ -14,7 +14,7 @@ export default function Dashboard() {
       if (user) {
         // console.log(user)
         setUser(user)
-        await crearUsuario(user)
+        await crearEmpleado(user)
       }
     }
 
