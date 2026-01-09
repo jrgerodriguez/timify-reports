@@ -10,13 +10,8 @@ const [ info, setInfo ]=useState([])
 
 useEffect(()=>{
     const fetchData = async ()=>{
-<<<<<<< Updated upstream
     const { data, error } = await supabase
     .from("test_table") //Se selecciona la tabla de la cual se extraerán los datos.
-=======
-    const { data } = await supabase
-    .from("empleados") //Se selecciona la tabla de la cual se extraerán los datos.
->>>>>>> Stashed changes
     .select("*") //Llama a todos los elementos de la tabla.
 
     if (error) {
