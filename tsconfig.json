@@ -34,6 +34,6 @@
     "app/components/LoginForm.jsx",
     "app/dashboard/layout.jsx",
     "app/page.jsx"
-, "app/dashboard/page.jsx"  ],
+, "app/dashboard/page.jsx", "app/dashboard/tracker/page.jsx"  ],
   "exclude": ["node_modules"]
 }
