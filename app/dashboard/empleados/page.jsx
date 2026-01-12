@@ -1,16 +1,13 @@
 import EmpleadosTabla from "../../components/EmpleadosTabla"
-import { supabase } from '@/lib/supabase/client.js'
+import { createClient } from "@/lib/supabase/server"
+import {obtenerEmpleados} from "@/lib/supabase/empleados"
+
 export const dynamic = 'force-dynamic'
 
 export default async function EmpleadosPage() {
-    const { data: empleados = [], error } = await supabase
-        .from('users')
-        .select('*')
-        .order("nombre", { ascending: true })
 
-    if (error) {
-        console.error(error)
-    }
+    const supabase = await createClient()
+    const empleados = await obtenerEmpleados(supabase)    
 
     return (
 
