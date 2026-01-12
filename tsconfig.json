@@ -29,7 +29,11 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
-    "**/*.mts"
-, "app/components/LoginForm.jsx", "app/dashboard/layout.jsx"  ],
+    "**/*.mts",
+    "app/components/LoginSection.jsx",
+    "app/components/LoginForm.jsx",
+    "app/dashboard/layout.jsx",
+    "app/page.jsx"
+, "app/dashboard/page.jsx", "app/dashboard/tracker/page.jsx"  ],
   "exclude": ["node_modules"]
 }

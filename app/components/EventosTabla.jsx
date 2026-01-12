@@ -107,9 +107,9 @@ export default function ResumenActividades() {
     setLoading(true);
 
     let query = supabase
-      .from("attendance_events")
+      .from("eventos")
       .select(`*,
-        users(*)`
+        empleados(*)`
       )
       .order("event_time", { ascending: false });
 
@@ -124,21 +124,21 @@ export default function ResumenActividades() {
     const { data, error } = await query;
 
     if (error) {
-      console.error(error);
       setLoading(false);
+      throw new Error(error.message);
       return;
     }
 
     const events = data.map((act) => {
-        const user = act.users;
+        const empleado = act.empleados;
         
         return {
         id: act.id,
         time: act.event_time,
         date: act.date,
         type: getEventLabel(act.event_type),
-        empleado: user 
-        ? `${act.users.nombre} ${act.users.apellido}`
+        empleado: empleado 
+        ? `${act.empleados.nombre}`
         : "Usuario desconocido"
         }
     })

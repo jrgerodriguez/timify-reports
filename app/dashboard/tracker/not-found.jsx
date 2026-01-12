@@ -5,7 +5,7 @@ export default function NotFoundEmpleado() {
         Empleado no encontrado
       </h2>
       <p className="text-gray-500 mt-2">
-        No pudimos encontrarte en nuestra base de datos.
+        El empleado que buscas no existe o fue eliminado.
       </p>
     </section>
   )
