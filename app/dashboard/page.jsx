@@ -9,27 +9,38 @@ import { useRouter } from 'next/navigation'
 export default function Dashboard() {
   const [user, setUser] = useState(null)
   const router = useRouter()
+  const [error, setError] = useState(null)
+  const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    const init = async () => {
+useEffect(() => {
+  const init = async () => {
+    try {
       const { data: { user } } = await supabase.auth.getUser()
-      console.log(user)
+
       if (user) {
         setUser(user)
-        try {
-          await crearEmpleado(supabase, user)
-        } catch (error) {
-          console.error("Error al sincronizar empleado:", error.message)
-        } 
+        await crearEmpleado(supabase, user)
       } else {
-          router.push("/login")
-        }
+        router.push("/login")
+      }
+
+    } catch (err) {
+      setError(err?.message ?? "Error inesperado.")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  init()
+}, [router])
+
+    if (loading) {
+      return <p className="text-center mt-10 text-gray-500">Loading...</p>
     }
 
-    init()
-  }, [router])
-
-  if (!user) return <p className="text-center mt-10 text-gray-500">Loading...</p>
+    if (error) {
+      return <p className="text-center mt-10 text-red-500">{error}</p>
+    }
 
   return (
     <div className="flex flex-col items-center justify-center mt-10 space-y-4 bg-white p-6 rounded-xl shadow-md max-w-sm mx-auto">

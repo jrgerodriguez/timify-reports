@@ -13,6 +13,7 @@ export default function ResumenActividades() {
   const [loading, setLoading] = useState(true);
   const [fromDate, setFromDate] = useState(today);
   const [toDate, setToDate] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
 
   /* ================= HELPERS ================= */
 
@@ -105,46 +106,48 @@ export default function ResumenActividades() {
 
   const fetchActivities = async () => {
     setLoading(true);
+    setErrorMessage(null)
 
-    let query = supabase
-      .from("eventos")
-      .select(`*,
-        empleados(*)`
-      )
-      .order("event_time", { ascending: false });
+    try {
+      let query = supabase
+        .from("eventos")
+        .select(`*,
+          empleados(*)`
+        )
+        .order("event_time", { ascending: false });
 
-    if (fromDate) {
-      query = query.gte("date", fromDate);
+      if (fromDate) {
+        query = query.gte("date", fromDate);
+      }
+
+      if (toDate) {
+        query = query.lte("date", toDate);
+      }
+
+      const { data, error: supabaseError } = await query;
+
+      if (supabaseError) {
+        throw supabaseError;
+      }
+
+      const events = (data ?? []).map((act) => {          
+          return {
+          id: act.id,
+          time: act.event_time,
+          date: act.date,
+          type: getEventLabel(act.event_type),
+          empleado: act.empleados?.nombre || "Usuario desconocido"
+          }
+      })
+
+      setActivities(events);
+
+    } catch(err) {
+      console.error("Error cargando actividades:", err);
+      setErrorMessage("No se pudieron cargar las actividades. Intenta de nuevo.");
+    } finally {
+      setLoading(false)
     }
-
-    if (toDate) {
-      query = query.lte("date", toDate);
-    }
-
-    const { data, error } = await query;
-
-    if (error) {
-      setLoading(false);
-      throw new Error(error.message);
-      return;
-    }
-
-    const events = data.map((act) => {
-        const empleado = act.empleados;
-        
-        return {
-        id: act.id,
-        time: act.event_time,
-        date: act.date,
-        type: getEventLabel(act.event_type),
-        empleado: empleado 
-        ? `${act.empleados.nombre}`
-        : "Usuario desconocido"
-        }
-    })
-
-    setActivities(events);
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -227,15 +230,13 @@ export default function ResumenActividades() {
         </button>
       </div>
 
-      {loading ? (
-        <p className="text-gray-400 text-center text-sm">
-          Cargando actividades...
-        </p>
-      ) : activities.length === 0 ? (
-        <p className="text-gray-400 text-center text-sm">
-          No hay eventos registrados.
-        </p>
-      ) : (
+        {loading ? (
+            <p className="text-gray-400 text-center text-sm">Cargando actividades...</p>
+          ) : errorMessage ? (
+            <p className="text-red-500 text-center text-sm">{errorMessage}</p> 
+          ) : activities.length === 0 ? (
+            <p className="text-gray-400 text-center text-sm">No hay eventos registrados.</p>
+          ) : (
         <div className="overflow-y-auto max-h-[500px]">
           <table className="min-w-full text-sm text-gray-700 border-collapse">
             <thead className="sticky top-0 bg-gray-50">

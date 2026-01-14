@@ -8,6 +8,7 @@ export default function ResumenActividades({ userId }) {
   const [loading, setLoading] = useState(true);
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null)
 
   /* ================= HELPERS ================= */
 
@@ -108,8 +109,18 @@ export default function ResumenActividades({ userId }) {
   /* ================= DATA ================= */
 
   const fetchActivities = async () => {
-    setLoading(true);
 
+    if (!userId) {
+      setActivities([]);
+      setErrorMessage("No hay empleado seleccionado.");
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+    setErrorMessage(null);
+
+  try {
     let query = supabase
       .from("eventos")
       .select("*")
@@ -124,12 +135,10 @@ export default function ResumenActividades({ userId }) {
       query = query.lte("date", toDate);
     }
 
-    const { data, error } = await query;
+    const { data, error: supabaseError } = await query;
 
-    if (error) {
-      console.error(error);
-      setLoading(false);
-      return;
+    if (supabaseError) {
+      throw supabaseError;
     }
 
     const events = [];
@@ -137,7 +146,7 @@ export default function ResumenActividades({ userId }) {
     let lastLunchIn = null;
     let lastBreakIn = null;
 
-    data.forEach((act) => {
+    (data ?? []).forEach((act) => {
       const base = {
         time: act.event_time,
         date: act.date,
@@ -206,7 +215,13 @@ export default function ResumenActividades({ userId }) {
 
     events.sort((a, b) => new Date(b.time) - new Date(a.time));
     setActivities(events);
-    setLoading(false);
+  } catch (error) {
+    console.error(error)
+    setErrorMessage("No se pudieron cargar las actividades.")
+    setActivities([])
+  } finally {
+    setLoading(false)
+  }
   };
 
   useEffect(() => {
@@ -216,6 +231,7 @@ export default function ResumenActividades({ userId }) {
   /* ================= UI ================= */
 
   return (
+    
     <div className="bg-white p-6 rounded-md w-full border border-gray-300">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-semibold text-gray-900">
@@ -297,6 +313,8 @@ export default function ResumenActividades({ userId }) {
         <p className="text-gray-400 text-center text-sm">
           Cargando actividades...
         </p>
+      ) : errorMessage ? (
+        <p className="text-red-500 text-center text-sm">{errorMessage}</p>
       ) : activities.length === 0 ? (
         <p className="text-gray-400 text-center text-sm">
           No hay eventos registrados.
