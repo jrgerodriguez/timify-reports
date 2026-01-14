@@ -113,7 +113,7 @@ export default function ResumenActividades({ userId }) {
     let query = supabase
       .from("eventos")
       .select("*")
-      .eq("user_id", userId)
+      .eq("empleado_id", userId)
       .order("event_time", { ascending: true });
 
     if (fromDate) {

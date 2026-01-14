@@ -1,6 +1,6 @@
 import Sidebar from "../components/Sidebar"
 
-export default function DashboardLayout({ children }) {
+export default async function DashboardLayout({ children }) {
   return (
     <div className="flex min-h-screen">
       
