@@ -5,7 +5,7 @@ export async function GET(request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
 
-  const response = NextResponse.redirect(`timify-reports.vercel.app/dashboard`);
+  const response = NextResponse.redirect(`${origin}/dashboard`);
 
   if (code) {
     const supabase = createServerClient(
