@@ -2,30 +2,25 @@
 
 import Link from "next/link"
 import { FiChevronRight  } from 'react-icons/fi'
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 
 export default function EmpleadosTabla({empleados}) {
-
-    const safeEmpleados = Array.isArray(empleados) ? empleados : [];
-
     const [search, setSearch] = useState("");
-    const [filtered, setFiltered] = useState(safeEmpleados);
-
-    useEffect(() => {
-    const term = search.toLowerCase().trim()
     
-    if (!term) {
-        setFiltered(safeEmpleados)
-        return
-    }
+    const filtered = useMemo(() => {
+        const safeEmpleados = Array.isArray(empleados) ? empleados : [];
+        const term = search.toLowerCase().trim();
 
-    const data = safeEmpleados.filter(e => {
-        const fullName = `${e.nombre ?? ""} ${e.apellido ?? ""}`.toLowerCase()
-        return fullName.includes(term)
-    })
+        const result = term 
+        ? safeEmpleados.filter(e => {
+            const fullName = `${e.nombre ?? ""}`.toLowerCase()
+            const email = `${e.email ?? ""}`.toLowerCase()
+            return fullName.includes(term) || email.includes(term)
+        })
+        : safeEmpleados;
 
-    setFiltered(data)
-    }, [search, safeEmpleados])
+        return [...result].sort((a, b) => (a.nombre ?? "").localeCompare(b.nombre ?? ""))
+    }, [search, empleados])
 
      return (
         <>
@@ -58,7 +53,11 @@ export default function EmpleadosTabla({empleados}) {
                                     hover:bg-gray-50 transition"
                         >
                             <span className="text-gray-800 font-medium">
-                            {e.nombre} {e.apellido}
+                            {e.nombre}
+                            </span>
+
+                            <span className="text-gray-500 text-sm">
+                            {e.email}
                             </span>
 
                             <span className="text-sm text-gray-400">

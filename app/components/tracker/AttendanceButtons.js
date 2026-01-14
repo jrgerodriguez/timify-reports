@@ -74,12 +74,12 @@ if (!lastEvent) {
   return;
 }
 
-// Si llegamos aquí, sí hay un evento
-const entradaActiva = lastEvent.event_type !== "clock_out";
-setEntradaMarcada(entradaActiva);
-setLunchActivo(lastEvent.event_type === "lunch_in");
-setBreakActivo(lastEvent.event_type === "break_in");
-    };
+  // Si llegamos aquí, sí hay un evento
+  const entradaActiva = lastEvent.event_type !== "clock_out";
+  setEntradaMarcada(entradaActiva);
+  setLunchActivo(lastEvent.event_type === "lunch_in");
+  setBreakActivo(lastEvent.event_type === "break_in");
+};
 
       checkEstado();
   }, [userId]);
